@@ -1,21 +1,41 @@
-# AI Software Compiler (Deterministic Multi-Stage System)
+# AI Software Compiler
 
-![Build](https://img.shields.io/badge/build-passing-brightgreen)
-![Tests](https://img.shields.io/badge/tests-pytest-blue)
-![Python](https://img.shields.io/badge/python-3.11%2B-blue)
-![TypeScript](https://img.shields.io/badge/typescript-Next.js-3178C6)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-blue)](https://app-compiler-ai.vercel.app/)
+[![Backend API](https://img.shields.io/badge/Backend%20API-Render-0ea5e9)](https://app-compiler-ai-backend.onrender.com/)
+[![API Docs](https://img.shields.io/badge/API%20Docs-Swagger-22c55e)](https://app-compiler-ai-backend.onrender.com/docs)
+![Build Status](https://img.shields.io/badge/CI-build%20passing-brightgreen)
+![Python](https://img.shields.io/badge/Python-3.11%2B-blue)
+![Next.js](https://img.shields.io/badge/Next.js-16-black)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688)
 
-Internship-grade compiler-style system that transforms natural language product requirements into executable application configuration through deterministic, modular stages.
+A deterministic compiler-style system that converts natural language software requirements into structured, executable system architecture through multi-stage compilation, validation, targeted repair, runtime simulation, and benchmarking.
 
-## Project Overview
-This project is designed to feel like an engineered compiler pipeline rather than a one-shot prompt generator. It emphasizes:
-- deterministic generation
-- strict schema contracts
-- targeted repair instead of full regeneration
-- runtime execution awareness
-- measurable benchmark outcomes
+## Live Demo
+- **Live Frontend**: `https://app-compiler-ai.vercel.app/`
+- **Backend API**: `https://app-compiler-ai-backend.onrender.com/`
+- **API Docs (Swagger)**: `https://app-compiler-ai-backend.onrender.com/docs`
 
-## Architecture
+## Features
+- **Deterministic multi-stage pipeline** (compiler-like, modular stages)
+- **Strict contracts & schema enforcement** (typed outputs, stable structure)
+- **Semantic validation** (UI → API → DB lineage checks + policy checks)
+- **Targeted repair** (fix only the failing module; bounded attempts)
+- **Runtime simulation** (execution confidence + issue reporting)
+- **Benchmark suite** (10 real + 10 edge prompts, aggregated metrics)
+- **Explainability** (“why decisions were made” per stage)
+- **Export outputs** (JSON/Markdown for compile + benchmark reports)
+
+## Why this project matters (recruiter summary)
+This is not a “one prompt → one blob” generator. It demonstrates production-minded AI systems engineering:
+- **Deterministic engineering**: stable, repeatable outputs for the same input
+- **Validation lineage**: verifies field mappings across UI, API, and DB layers
+- **Targeted repair vs monolithic retries**: cheaper and more debuggable recovery
+- **Runtime execution confidence**: checks that the generated config is executable
+- **Benchmark evaluation**: measurable outcomes over real and adversarial prompts
+- **Explainability**: traceable reasoning and repair actions, reviewer-friendly
+
+## Architecture Overview
 ```text
 Prompt
   -> Intent Extraction
@@ -27,34 +47,29 @@ Prompt
   -> Executable JSON + Metrics
 ```
 
-### Screenshot Placeholders
-- `docs/screenshots/dashboard-home.png` (main control panel)
-- `docs/screenshots/pipeline-stage-output.png` (stage cards + status)
-- `docs/screenshots/benchmark-dashboard.png` (evaluation metrics)
-
-## Pipeline Stages
+## Deterministic Pipeline Stages
 1. **Intent Extraction**: domain templates + deterministic keyword inference.
 2. **System Design**: modules, permissions, relationships, navigation topology.
 3. **Schema Generation**: strict JSON contracts for UI/API/DB/Auth.
 4. **Validation**: lineage graph checks and cross-layer semantic checks.
-5. **Repair**: module-scoped deterministic repairs.
+5. **Repair**: module-scoped deterministic repairs (no full regeneration).
 6. **Runtime Simulation**: execution readiness + confidence scoring.
 7. **Metrics**: quality score and cost-vs-quality tradeoff snapshots.
 
 ## Validation + Repair Strategy
-- Validation outputs:
+- Validation produces:
   - `errors`
   - `warnings`
-  - `consistency_score`
+  - `consistency_score` (0–100)
   - `repair_candidates`
 - Repair applies targeted fixes only to failing modules:
   - field insertion
   - schema alignment
   - dependency reconciliation
-- No brute-force full pipeline regeneration.
+- Bounded repair attempts (no brute-force regeneration loops).
 
 ## Runtime Simulation
-Runtime simulation verifies:
+Runtime simulation validates:
 - UI renderability
 - API route integrity and mapping
 - DB schema/relation integrity
@@ -63,40 +78,51 @@ Runtime simulation verifies:
 
 Outputs include:
 - `executable` (boolean)
-- `confidence_score` (0-100)
+- `confidence_score` (0–100)
 - `issues` (actionable list)
 
-## Benchmark Evaluation
-Runs across **20 prompts** (10 real + 10 edge), with metrics:
-- success_rate
-- failure_rate
-- repair_rate
-- avg_repairs
+## Benchmarking & Metrics
+Benchmarks run across **20 prompts** (10 real + 10 edge), tracking:
+- success_rate / failure_rate
+- repair_rate / avg_repairs
 - avg_latency
 - consistency_score
-- execution_rate
-- runtime_failures
+- execution_rate / runtime_failures
 
-Generated artifacts:
+Artifacts:
 - `evaluation_report.json`
 - `docs/evaluation_report.md`
 
-## Tech Stack
-- Frontend: Next.js + Tailwind CSS + TypeScript
-- Backend: FastAPI + Pydantic
-- Validation: Pydantic + semantic consistency engine
-- Storage: SQLite scaffold
-- Testing: Pytest
-- CI: GitHub Actions
+## Explainability Engine
+Each run includes an `explainability` section with human-readable reasoning:
+- why certain features/entities were inferred
+- which validations triggered
+- what targeted repairs were applied
+- why runtime confidence/executability was reached
 
-## How to Run
+## Tech Stack
+- **Frontend**: Next.js 16 + Tailwind CSS + TypeScript (Vercel)
+- **Backend**: FastAPI + Pydantic (Render)
+- **Validation**: Pydantic contracts + semantic consistency engine
+- **Storage**: SQLite scaffold
+- **Testing**: Pytest
+- **CI**: GitHub Actions
+
+## Deployment
+- **Frontend**: Vercel
+- **Backend**: Render
+
+## Production URLs
+- Frontend: `https://app-compiler-ai.vercel.app/`
+- Backend: `https://app-compiler-ai-backend.onrender.com/`
+- Swagger: `https://app-compiler-ai-backend.onrender.com/docs`
+
+## Local Development Setup
+
 ### Backend
 ```bash
 cd backend
-python -m venv .venv
-.venv\Scripts\activate
 python -m pip install -r requirements.txt
-python -m pytest
 python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
@@ -104,7 +130,6 @@ python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 ```bash
 cd frontend
 npm install
-npm run build
 npm run dev
 ```
 
@@ -119,20 +144,67 @@ npm run dev
 - `GET /api/v1/evaluation/export/json`
 - `GET /api/v1/evaluation/export/markdown`
 
-## Demo Instructions
-1. Start backend and frontend.
-2. Use demo preset prompts in the UI.
-3. Click **Generate** or **Run Full Pipeline Demo**.
-4. Inspect stage outputs, validation, repair actions, runtime confidence.
-5. Click **Run Benchmark** and review analytics cards.
-6. Export JSON/Markdown reports for submission artifacts.
+## API Examples (Production)
 
-## Tradeoffs
-- Deterministic heuristics increase reliability and reproducibility, but reduce creative variance.
-- Targeted repair lowers retry cost, but still requires bounded repair loops for edge prompts.
+### Compile
+```bash
+curl -X POST \"https://app-compiler-ai-backend.onrender.com/api/v1/compile\" \\
+  -H \"Content-Type: application/json\" \\
+  -d '{\"prompt\":\"Build a CRM with login and premium billing.\"}'
+```
+
+### Run benchmark
+```bash
+curl -X POST \"https://app-compiler-ai-backend.onrender.com/api/v1/evaluation/run\"
+```
+
+### Get benchmark report
+```bash
+curl \"https://app-compiler-ai-backend.onrender.com/api/v1/evaluation/report\"
+```
+
+### Export compile output (JSON)
+```bash
+curl -X POST \"https://app-compiler-ai-backend.onrender.com/api/v1/compile/export/json\" \\
+  -H \"Content-Type: application/json\" \\
+  -d '{\"prompt\":\"Build a CRM with login and premium billing.\"}' \\
+  -o compile_output.json
+```
+
+### Export benchmark report (Markdown)
+```bash
+curl \"https://app-compiler-ai-backend.onrender.com/api/v1/evaluation/export/markdown\" \\
+  -o benchmark_report.md
+```
+
+## Demo Flow
+1. Open the live app: `https://app-compiler-ai.vercel.app/`
+2. Choose a preset in **Prompt Studio**.
+3. Click **Generate** to see:
+   - stage outputs (intent → design → schema → validation → repair → runtime)
+   - consistency score, confidence score, quality score
+4. Click **Run Full Pipeline Demo** for a guided progression.
+5. Click **Run Benchmark** to populate the benchmark dashboard.
+6. Use export buttons to download JSON/Markdown artifacts.
+
+## Screenshots (placeholders)
+- `docs/screenshots/dashboard-home.png`
+- `docs/screenshots/pipeline-stage-output.png`
+- `docs/screenshots/benchmark-dashboard.png`
+
+## Tradeoffs & Design Decisions
+- Determinism increases reproducibility and auditability, but reduces creative variance.
+- Targeted repair lowers retry cost and improves debuggability vs full regeneration.
+- Execution-aware simulation prioritizes deployable correctness over “pretty” outputs.
 
 ## Future Improvements
 - richer entity graph constraints
 - migration planning/generation
 - provider-backed strict decoding adapters
 - expanded frontend e2e test coverage
+
+## Contributing
+See `CONTRIBUTING.md`.
+
+## License
+MIT — see `LICENSE`.

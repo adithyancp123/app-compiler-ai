@@ -4,7 +4,7 @@
 - Failure rate: 0.0%
 - Repair rate: 0.0%
 - Avg repairs: 0.0
-- Avg latency: 0.05 ms
+- Avg latency: 3.45 ms
 - Avg consistency score: 96.4
 - Execution rate: 100.0%
 - Runtime failures: 0
