@@ -1,7 +1,12 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+html,
+body {
+  background: #f8fafc;
+  color: #111827;
+  min-height: 100%;
+}
 
 body {
-  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-family: Arial, sans-serif;
 }

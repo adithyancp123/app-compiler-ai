@@ -5,62 +5,69 @@
 ![Python](https://img.shields.io/badge/python-3.11%2B-blue)
 ![TypeScript](https://img.shields.io/badge/typescript-Next.js-3178C6)
 
-Internship-grade project that compiles natural language requirements into executable software configuration through modular deterministic stages.
+Internship-grade compiler-style system that transforms natural language product requirements into executable application configuration through deterministic, modular stages.
 
-## Problem Statement
-Most prompt-to-app systems behave like opaque generators. This project introduces compiler-style engineering:
-- deterministic stage contracts
-- strict schema validation
-- module-scoped repair
-- execution-aware simulation
+## Project Overview
+This project is designed to feel like an engineered compiler pipeline rather than a one-shot prompt generator. It emphasizes:
+- deterministic generation
+- strict schema contracts
+- targeted repair instead of full regeneration
+- runtime execution awareness
 - measurable benchmark outcomes
 
-## Architecture Diagram
-```
+## Architecture
+```text
 Prompt
   -> Intent Extraction
   -> System Design
   -> Schema Generation (UI/API/DB/Auth)
   -> Validation Engine (lineage + semantic consistency)
-  -> Repair Engine (targeted only)
+  -> Repair Engine (targeted module fixes)
   -> Runtime Simulation (execution confidence)
   -> Executable JSON + Metrics
 ```
 
-## Pipeline Overview
-1. **Intent Extraction**: domain template + keyword inference for features, roles, entities, pages, assumptions.
-2. **System Design**: deterministic modules, permissions, relationships, and navigation map.
-3. **Schema Generation**: strict typed JSON for UI/API/DB/Auth.
-4. **Validation Engine**: field lineage graph checks, feature consistency, navigation integrity, role consistency.
-5. **Repair Engine**: repairs only failing modules (field insertion, schema alignment, dependency reconciliation).
-6. **Runtime Simulation**: validates renderability, route reachability, DB/auth/feature integrity and confidence score.
-7. **Quality + Cost Metrics**: deterministic scoring and mode tradeoffs.
+### Screenshot Placeholders
+- `docs/screenshots/dashboard-home.png` (main control panel)
+- `docs/screenshots/pipeline-stage-output.png` (stage cards + status)
+- `docs/screenshots/benchmark-dashboard.png` (evaluation metrics)
 
-## Determinism Controls
-- fixed stage ordering
-- deterministic templates
-- stable sorting
-- strict Pydantic contracts
-- JSON-only outputs
-- bounded repair loop
+## Pipeline Stages
+1. **Intent Extraction**: domain templates + deterministic keyword inference.
+2. **System Design**: modules, permissions, relationships, navigation topology.
+3. **Schema Generation**: strict JSON contracts for UI/API/DB/Auth.
+4. **Validation**: lineage graph checks and cross-layer semantic checks.
+5. **Repair**: module-scoped deterministic repairs.
+6. **Runtime Simulation**: execution readiness + confidence scoring.
+7. **Metrics**: quality score and cost-vs-quality tradeoff snapshots.
 
-## Validation and Repair Strategy
-- Detects orphan fields/routes/roles and semantic contradictions.
-- Produces:
+## Validation + Repair Strategy
+- Validation outputs:
   - `errors`
   - `warnings`
-  - `consistency_score` (0-100)
+  - `consistency_score`
   - `repair_candidates`
-- Repair operates in module scope only; no full pipeline rerun.
+- Repair applies targeted fixes only to failing modules:
+  - field insertion
+  - schema alignment
+  - dependency reconciliation
+- No brute-force full pipeline regeneration.
 
-## Runtime Execution Awareness
-Runtime simulator returns:
-- `executable`
+## Runtime Simulation
+Runtime simulation verifies:
+- UI renderability
+- API route integrity and mapping
+- DB schema/relation integrity
+- auth role/rule integrity
+- feature-level consistency
+
+Outputs include:
+- `executable` (boolean)
 - `confidence_score` (0-100)
-- integrity flags and issue list
+- `issues` (actionable list)
 
-## Benchmarking and Evaluation
-Benchmarks run across 20 prompts (10 real + 10 edge):
+## Benchmark Evaluation
+Runs across **20 prompts** (10 real + 10 edge), with metrics:
 - success_rate
 - failure_rate
 - repair_rate
@@ -70,38 +77,34 @@ Benchmarks run across 20 prompts (10 real + 10 edge):
 - execution_rate
 - runtime_failures
 
-Artifacts generated on benchmark run:
+Generated artifacts:
 - `evaluation_report.json`
 - `docs/evaluation_report.md`
 
-## Cost vs Quality Modes
-Metrics include tradeoff summary:
-- **fast**: lower latency/cost, reduced expected quality
-- **balanced**: default deterministic reliability
-- **high_reliability**: more cost/latency, higher expected quality
-
 ## Tech Stack
-- Frontend: Next.js + Tailwind + TypeScript
+- Frontend: Next.js + Tailwind CSS + TypeScript
 - Backend: FastAPI + Pydantic
-- Validation: Pydantic contracts + semantic engine
+- Validation: Pydantic + semantic consistency engine
 - Storage: SQLite scaffold
 - Testing: Pytest
+- CI: GitHub Actions
 
-## Run Locally
+## How to Run
 ### Backend
 ```bash
 cd backend
 python -m venv .venv
-.venv\Scriptsctivate
+.venv\Scripts\activate
 python -m pip install -r requirements.txt
 python -m pytest
-python -m uvicorn app.main:app --reload
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
 ### Frontend
 ```bash
 cd frontend
 npm install
+npm run build
 npm run dev
 ```
 
@@ -109,24 +112,27 @@ npm run dev
 - `GET /api/v1/health`
 - `POST /api/v1/compile`
 - `GET /api/v1/compile/contracts`
+- `POST /api/v1/compile/export/json`
+- `POST /api/v1/compile/export/markdown`
 - `GET /api/v1/evaluation/report`
 - `POST /api/v1/evaluation/run`
+- `GET /api/v1/evaluation/export/json`
+- `GET /api/v1/evaluation/export/markdown`
 
-## Demo Prompts
-- CRM
-- E-commerce
-- Hospital Management
-- School Management
-- Subscription SaaS
-- Marketplace
-- Inventory System
+## Demo Instructions
+1. Start backend and frontend.
+2. Use demo preset prompts in the UI.
+3. Click **Generate** or **Run Full Pipeline Demo**.
+4. Inspect stage outputs, validation, repair actions, runtime confidence.
+5. Click **Run Benchmark** and review analytics cards.
+6. Export JSON/Markdown reports for submission artifacts.
 
 ## Tradeoffs
-- Deterministic heuristics improve predictability but may reduce creative variance.
-- Targeted repair reduces regeneration cost but may require multiple bounded attempts.
+- Deterministic heuristics increase reliability and reproducibility, but reduce creative variance.
+- Targeted repair lowers retry cost, but still requires bounded repair loops for edge prompts.
 
 ## Future Improvements
 - richer entity graph constraints
-- migration plan generation
-- provider-backed deterministic LLM adapters with schema decoding
-- CI/CD pipeline + containerized deployment profiles
+- migration planning/generation
+- provider-backed strict decoding adapters
+- expanded frontend e2e test coverage

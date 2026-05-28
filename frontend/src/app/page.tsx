@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import PromptForm from "@/components/PromptForm";
 import ResultsPanel from "@/components/ResultsPanel";
+import SidebarNav from "@/components/SidebarNav";
 import StageOutputPanel from "@/components/StageOutputPanel";
 import { compilePrompt, runBenchmark } from "@/lib/api";
 import { CompileResponse, EvaluationReport } from "@/types/pipeline";
@@ -71,73 +72,124 @@ export default function HomePage() {
     }
   };
 
-  const tabClass = (value: Tab) =>
-    `rounded px-3 py-1 text-xs font-semibold ${tab === value ? "bg-indigo-600 text-white" : "bg-slate-900 text-slate-300"}`;
+  const navItems = [
+    { id: "pipeline", label: "Pipeline", icon: "🧬" },
+    { id: "validation", label: "Validation", icon: "✅" },
+    { id: "repairs", label: "Repairs", icon: "🛠️" },
+    { id: "runtime", label: "Runtime", icon: "⚙️" },
+    { id: "evaluation", label: "Evaluation", icon: "📊" },
+  ];
 
   return (
-    <main className="mx-auto max-w-7xl space-y-6 px-6 py-8">
-      <header className="rounded-xl border border-slate-800 bg-slate-900/70 p-4">
-        <h1 className="text-2xl font-bold text-white">AI Software Compiler</h1>
-        <p className="mt-1 text-sm text-slate-400">
-          Deterministic compiler pipeline with explainability, targeted repair, runtime confidence, and benchmark analytics.
-        </p>
-      </header>
+    <main className="mx-auto max-w-7xl space-y-5 px-4 py-6 sm:px-6 lg:px-8">
+      <nav className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-slate-200 bg-white shadow-sm">
+            ⚡
+          </div>
+          <div>
+            <p className="text-sm font-bold text-slate-900">AI Software Compiler</p>
+            <p className="text-xs text-slate-500">Deterministic multi-stage compilation</p>
+          </div>
+        </div>
+        <div className="hidden items-center gap-2 md:flex">
+          <span className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700 shadow-sm">
+            v1
+          </span>
+        </div>
+      </nav>
 
-      <PromptForm onGenerate={handleGenerate} onRunDemo={runProgressDemo} loading={loading || benchmarkLoading} />
+      <section className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white/70 p-5 shadow-sm backdrop-blur">
+        <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-gradient-to-br from-blue-200/70 to-indigo-100/40 blur-3xl" />
+        <div className="pointer-events-none absolute -left-24 -bottom-24 h-72 w-72 rounded-full bg-gradient-to-tr from-sky-200/50 to-blue-100/30 blur-3xl" />
 
-      <div className="flex flex-wrap items-center gap-2 rounded-xl border border-slate-800 bg-slate-900/70 p-3">
-        <button className={tabClass("pipeline")} onClick={() => setTab("pipeline")} type="button">Pipeline</button>
-        <button className={tabClass("validation")} onClick={() => setTab("validation")} type="button">Validation</button>
-        <button className={tabClass("repairs")} onClick={() => setTab("repairs")} type="button">Repairs</button>
-        <button className={tabClass("runtime")} onClick={() => setTab("runtime")} type="button">Runtime</button>
-        <button className={tabClass("evaluation")} onClick={() => setTab("evaluation")} type="button">Evaluation</button>
-        <button
-          type="button"
-          onClick={handleBenchmark}
-          disabled={benchmarkLoading}
-          className="ml-auto rounded bg-emerald-600 px-3 py-1 text-xs font-semibold text-white disabled:opacity-60"
-        >
-          {benchmarkLoading ? "Running Benchmark..." : "Run Benchmark"}
-        </button>
-      </div>
+        <div className="grid gap-5 lg:grid-cols-2 lg:items-center">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+              AI Software Compiler
+            </h1>
+            <p className="mt-3 text-sm leading-6 text-slate-600">
+              Transform natural language into deterministic software system architecture through multi-stage compilation, validation, repair, runtime simulation, and evaluation.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {["Deterministic", "Runtime-aware", "Validation Engine", "Benchmark Ready"].map((badge) => (
+                <span
+                  key={badge}
+                  className="rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700"
+                >
+                  {badge}
+                </span>
+              ))}
+            </div>
+          </div>
 
-      {loading ? <p className="text-sm text-indigo-300">Pipeline running deterministic compilation...</p> : null}
-      {error ? <p className="text-sm text-rose-400">{error}</p> : null}
+          <div className="rounded-2xl border border-slate-200 bg-white/60 p-4 shadow-sm backdrop-blur">
+            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Status</p>
+            <div className="mt-3 space-y-2 text-sm text-slate-800">
+              {[
+                "Deterministic",
+                "Runtime-aware",
+                "Validation Engine",
+                "Benchmark Ready",
+              ].map((item) => (
+                <div key={item} className="flex items-center gap-2">
+                  <span className="text-emerald-600">✓</span>
+                  <span className="font-semibold">{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        <StageOutputPanel outputs={result?.stage_outputs ?? []} progress={progress} progressLabel={progressLabel} />
-        <ResultsPanel result={result} benchmark={benchmark} activePrompt={activePrompt} />
-      </div>
+      <PromptForm
+        onGenerate={handleGenerate}
+        onRunDemo={runProgressDemo}
+        onRunBenchmark={handleBenchmark}
+        loading={loading || benchmarkLoading}
+      />
 
-      {result && tab !== "pipeline" ? (
-        <section className="rounded-xl border border-slate-800 bg-slate-900/70 p-4 text-sm">
-          <h2 className="font-semibold text-slate-200">{tab[0].toUpperCase() + tab.slice(1)} Focus</h2>
-          <pre className="mt-2 overflow-x-auto rounded-lg border border-slate-800 bg-slate-950 p-3 text-xs text-slate-300">
-            {JSON.stringify(
-              tab === "validation"
-                ? result.validation_report
-                : tab === "repairs"
-                  ? result.repair_actions
-                  : tab === "runtime"
-                    ? result.simulation_result
-                    : tab === "evaluation"
-                      ? benchmark
-                      : result.stage_outputs,
-              null,
-              2,
-            )}
-          </pre>
-        </section>
-      ) : null}
+      {loading ? <p className="text-sm font-semibold text-blue-700">Compiling pipeline…</p> : null}
+      {error ? <p className="rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-700">{error}</p> : null}
 
-      {result ? (
-        <section className="rounded-xl border border-slate-800 bg-slate-900/70 p-4 text-sm">
-          <h2 className="font-semibold text-slate-200">Cost vs Quality Snapshot</h2>
-          <pre className="mt-2 overflow-x-auto rounded-lg border border-slate-800 bg-slate-950 p-3 text-xs text-slate-300">
-            {JSON.stringify(result.metrics, null, 2)}
-          </pre>
-        </section>
-      ) : null}
+      <section className="grid gap-5 lg:grid-cols-[260px_1fr]">
+        <SidebarNav items={navItems} activeId={tab} onChange={(id) => setTab(id as Tab)} />
+
+        <div className="space-y-6">
+          {tab === "pipeline" ? (
+            <StageOutputPanel
+              outputs={result?.stage_outputs ?? []}
+              progress={progress}
+              progressLabel={progressLabel}
+              loading={loading || benchmarkLoading}
+            />
+          ) : (
+            <section className="rounded-2xl border border-slate-200 bg-white/70 p-4 shadow-sm backdrop-blur transition hover:shadow-md">
+              <h2 className="text-sm font-semibold text-slate-900">
+                {tab[0].toUpperCase() + tab.slice(1)}
+              </h2>
+              <p className="mt-1 text-xs text-slate-600">Focused view for deeper inspection.</p>
+              <pre className="mt-3 max-h-[440px] overflow-auto rounded-2xl border border-slate-800/90 bg-slate-950/95 p-4 font-mono text-xs leading-5 text-slate-100">
+                {JSON.stringify(
+                  tab === "validation"
+                    ? result?.validation_report
+                    : tab === "repairs"
+                      ? result?.repair_actions
+                      : tab === "runtime"
+                        ? result?.simulation_result
+                        : tab === "evaluation"
+                          ? benchmark
+                          : result?.stage_outputs,
+                  null,
+                  2,
+                )}
+              </pre>
+            </section>
+          )}
+
+          <ResultsPanel result={result} benchmark={benchmark} activePrompt={activePrompt} />
+        </div>
+      </section>
     </main>
   );
 }

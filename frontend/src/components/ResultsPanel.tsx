@@ -15,29 +15,29 @@ function JsonCard({ title, data }: { title: string; data: unknown }) {
   };
 
   return (
-    <article className="rounded-lg border border-slate-800 bg-slate-950 p-3">
+    <article className="rounded-xl border border-slate-200 bg-slate-50 p-3 transition hover:shadow-sm">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-slate-200">{title}</h3>
+        <h3 className="text-sm font-semibold text-slate-800">{title}</h3>
         <button
           type="button"
           onClick={copyJson}
-          className="rounded border border-slate-700 px-2 py-1 text-xs text-slate-300 hover:border-slate-500"
+          className="rounded-lg border border-slate-200 bg-white px-2 py-1 text-xs text-slate-600 transition hover:bg-slate-100"
         >
           Copy JSON
         </button>
       </div>
-      <pre className="mt-2 overflow-x-auto text-xs text-slate-300">{JSON.stringify(data, null, 2)}</pre>
+      <pre className="mt-2 max-h-72 overflow-auto rounded-lg border border-slate-200 bg-white p-2 text-xs text-slate-700">{JSON.stringify(data, null, 2)}</pre>
     </article>
   );
 }
 
 function ScoreCard({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded border border-slate-700 bg-slate-950 p-3">
-      <p className="text-xs text-slate-400">{label}</p>
-      <p className="text-lg font-bold text-slate-100">{value}%</p>
-      <div className="mt-2 h-2 rounded bg-slate-800">
-        <div className="h-2 rounded bg-emerald-500" style={{ width: `${Math.min(100, value)}%` }} />
+    <div className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm transition hover:shadow-md">
+      <p className="text-xs text-slate-500">{label}</p>
+      <p className="mt-1 text-xl font-bold tracking-tight text-slate-900">{value}%</p>
+      <div className="mt-2 h-2 rounded-full bg-slate-100">
+        <div className="h-2 rounded bg-blue-600" style={{ width: `${Math.min(100, value)}%` }} />
       </div>
     </div>
   );
@@ -46,26 +46,31 @@ function ScoreCard({ label, value }: { label: string; value: number }) {
 export default function ResultsPanel({ result, benchmark, activePrompt }: ResultsPanelProps) {
   if (!result) {
     return (
-      <section className="rounded-xl border border-slate-800 bg-slate-900/70 p-4 text-sm text-slate-400">
-        Run generation to inspect schema, validation report, explainability decisions, repairs, runtime confidence, and benchmark metrics.
+      <section className="rounded-2xl border border-slate-200 bg-white p-4 text-sm text-slate-600 shadow-sm">
+        <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-6 text-center">
+          <p className="font-medium text-slate-700">🚀 Run generation to inspect pipeline stages</p>
+          <p className="mt-1 text-xs text-slate-500">Validation, repairs, runtime confidence, and benchmark analytics will appear here.</p>
+        </div>
       </section>
     );
   }
 
   return (
-    <section className="space-y-3 rounded-xl border border-slate-800 bg-slate-900/70 p-4">
-      <div className="flex flex-wrap gap-2">
-        <button className="rounded border border-slate-700 px-2 py-1 text-xs text-slate-300" onClick={() => downloadCompileExport(activePrompt, "json")} type="button">Download JSON</button>
-        <button className="rounded border border-slate-700 px-2 py-1 text-xs text-slate-300" onClick={() => downloadCompileExport(activePrompt, "markdown")} type="button">Download Markdown</button>
-        <button className="rounded border border-slate-700 px-2 py-1 text-xs text-slate-300" onClick={() => downloadBenchmarkExport("json")} type="button">Benchmark JSON</button>
-        <button className="rounded border border-slate-700 px-2 py-1 text-xs text-slate-300" onClick={() => downloadBenchmarkExport("markdown")} type="button">Benchmark Markdown</button>
+    <section className="space-y-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md">
+      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        <ScoreCard label="Consistency Score" value={result.validation_report.consistency_score} />
+        <ScoreCard label="Runtime Confidence" value={result.simulation_result.confidence_score} />
+        <ScoreCard label="Quality Score" value={result.quality_score.final_score} />
+        <ScoreCard label="Execution Readiness" value={result.simulation_result.executable ? 100 : 0} />
+        <ScoreCard label="Repair Count" value={result.metrics.retry_count * 20} />
+        <ScoreCard label="Latency" value={Math.min(100, Math.round(result.metrics.latency_ms / 10))} />
       </div>
 
-      <div className="grid grid-cols-2 gap-2">
-        <ScoreCard label="Consistency" value={result.validation_report.consistency_score} />
-        <ScoreCard label="Confidence" value={result.simulation_result.confidence_score} />
-        <ScoreCard label="Quality" value={result.quality_score.final_score} />
-        <ScoreCard label="Execution" value={result.simulation_result.executable ? 100 : 0} />
+      <div className="flex flex-wrap gap-2">
+        <button className="rounded-lg border border-slate-200 bg-white px-2 py-1 text-xs text-slate-600 transition hover:-translate-y-0.5 hover:bg-slate-100" onClick={() => downloadCompileExport(activePrompt, "json")} type="button">Download JSON</button>
+        <button className="rounded-lg border border-slate-200 bg-white px-2 py-1 text-xs text-slate-600 transition hover:-translate-y-0.5 hover:bg-slate-100" onClick={() => downloadCompileExport(activePrompt, "markdown")} type="button">Download Markdown</button>
+        <button className="rounded-lg border border-slate-200 bg-white px-2 py-1 text-xs text-slate-600 transition hover:-translate-y-0.5 hover:bg-slate-100" onClick={() => downloadBenchmarkExport("json")} type="button">Benchmark JSON</button>
+        <button className="rounded-lg border border-slate-200 bg-white px-2 py-1 text-xs text-slate-600 transition hover:-translate-y-0.5 hover:bg-slate-100" onClick={() => downloadBenchmarkExport("markdown")} type="button">Benchmark Markdown</button>
       </div>
 
       <JsonCard title="Explainability: Why Decisions Were Made" data={result.explainability} />
@@ -75,15 +80,22 @@ export default function ResultsPanel({ result, benchmark, activePrompt }: Result
       <JsonCard title="Final Executable JSON" data={result.generated_schema} />
 
       {benchmark ? (
-        <div className="rounded-lg border border-slate-800 bg-slate-950 p-3">
-          <h3 className="text-sm font-semibold text-slate-200">Benchmark Dashboard</h3>
-          <div className="mt-2 grid grid-cols-2 gap-2 text-xs text-slate-300">
-            <p>Success rate: {benchmark.success_rate}%</p>
-            <p>Failure rate: {benchmark.failure_rate}%</p>
-            <p>Repair rate: {benchmark.repair_rate}%</p>
-            <p>Execution rate: {benchmark.execution_rate}%</p>
-            <p>Consistency: {benchmark.consistency_score}</p>
-            <p>Runtime failures: {benchmark.runtime_failures}</p>
+        <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+          <h3 className="text-sm font-semibold text-slate-800">Benchmark Dashboard</h3>
+          <div className="mt-2 grid grid-cols-2 gap-2 md:grid-cols-3">
+            {[
+              ["Success Rate", `${benchmark.success_rate}%`],
+              ["Failure Rate", `${benchmark.failure_rate}%`],
+              ["Repair Rate", `${benchmark.repair_rate}%`],
+              ["Execution Rate", `${benchmark.execution_rate}%`],
+              ["Consistency", `${benchmark.consistency_score}`],
+              ["Runtime Failures", `${benchmark.runtime_failures}`],
+            ].map(([label, value]) => (
+              <div key={label} className="rounded-lg border border-slate-200 bg-white p-2">
+                <p className="text-[10px] uppercase tracking-wide text-slate-500">{label}</p>
+                <p className="text-sm font-semibold text-slate-800">{value}</p>
+              </div>
+            ))}
           </div>
         </div>
       ) : null}

@@ -1,15 +1,30 @@
 import { CompileResponse, EvaluationReport } from "@/types/pipeline";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL ??
+  process.env.NEXT_PUBLIC_API_BASE_URL ??
+  "http://127.0.0.1:8000";
+
+function isLikelyNetworkFailure(err: unknown): boolean {
+  return err instanceof TypeError && /fetch/i.test(err.message);
+}
 
 export async function compilePrompt(prompt: string): Promise<CompileResponse> {
-  const response = await fetch(`${API_BASE_URL}/api/v1/compile`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ prompt }),
-  });
+  let response: Response;
+  try {
+    response = await fetch(`${API_BASE_URL}/api/v1/compile`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ prompt }),
+    });
+  } catch (err) {
+    if (isLikelyNetworkFailure(err)) {
+      throw new Error("Backend unavailable. Ensure FastAPI server is running on port 8000.");
+    }
+    throw err;
+  }
 
   if (!response.ok) {
     throw new Error("Failed to compile prompt");
@@ -19,11 +34,19 @@ export async function compilePrompt(prompt: string): Promise<CompileResponse> {
 }
 
 export async function runBenchmark(): Promise<EvaluationReport> {
-  const response = await fetch(`${API_BASE_URL}/api/v1/evaluation/report`);
-  if (!response.ok) {
-    throw new Error("Failed to run benchmark report");
+  let response: Response;
+  try {
+    response = await fetch(`${API_BASE_URL}/api/v1/evaluation/run`, { method: "POST" });
+  } catch (err) {
+    if (isLikelyNetworkFailure(err)) {
+      throw new Error("Backend unavailable. Ensure FastAPI server is running on port 8000.");
+    }
+    throw err;
   }
-  return (await response.json()) as EvaluationReport;
+  if (!response.ok) throw new Error("Failed to run benchmark");
+
+  const body = (await response.json()) as { report: EvaluationReport };
+  return body.report;
 }
 
 async function downloadFromEndpoint(url: string, filename: string): Promise<void> {
