@@ -1,9 +1,6 @@
 import { CompileResponse, EvaluationReport } from "@/types/pipeline";
 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL ??
-  process.env.NEXT_PUBLIC_API_BASE_URL ??
-  "http://127.0.0.1:8000";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 
 function isLikelyNetworkFailure(err: unknown): boolean {
   return err instanceof TypeError && /fetch/i.test(err.message);
