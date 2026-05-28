@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+pydantic
+pydantic-settings
+jsonschema
+sqlalchemy
+pytest
+httpx
+python-dotenv

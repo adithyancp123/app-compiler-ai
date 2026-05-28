@@ -1,0 +1,194 @@
+{
+  "real_prompts": [
+    {
+      "prompt": "Build a CRM with login, lead tracking, and payment subscriptions",
+      "success": true,
+      "retries": 0,
+      "latency_ms": 0,
+      "consistency_score": 97,
+      "executable": true,
+      "failure_category": null
+    },
+    {
+      "prompt": "Create an e-commerce app with catalog, cart, checkout, and order tracking",
+      "success": true,
+      "retries": 0,
+      "latency_ms": 0,
+      "consistency_score": 94,
+      "executable": true,
+      "failure_category": null
+    },
+    {
+      "prompt": "Develop a hospital management system with appointments and billing",
+      "success": true,
+      "retries": 0,
+      "latency_ms": 0,
+      "consistency_score": 94,
+      "executable": true,
+      "failure_category": null
+    },
+    {
+      "prompt": "Build a school portal with classes, attendance, and report cards",
+      "success": true,
+      "retries": 0,
+      "latency_ms": 0,
+      "consistency_score": 97,
+      "executable": true,
+      "failure_category": null
+    },
+    {
+      "prompt": "Create a SaaS project management app with team roles and subscriptions",
+      "success": true,
+      "retries": 0,
+      "latency_ms": 1,
+      "consistency_score": 97,
+      "executable": true,
+      "failure_category": null
+    },
+    {
+      "prompt": "Build an HR system with employee onboarding and payroll",
+      "success": true,
+      "retries": 0,
+      "latency_ms": 0,
+      "consistency_score": 97,
+      "executable": true,
+      "failure_category": null
+    },
+    {
+      "prompt": "Create a logistics app with shipment tracking and alerts",
+      "success": true,
+      "retries": 0,
+      "latency_ms": 0,
+      "consistency_score": 97,
+      "executable": true,
+      "failure_category": null
+    },
+    {
+      "prompt": "Develop a support desk app with tickets and SLA reporting",
+      "success": true,
+      "retries": 0,
+      "latency_ms": 0,
+      "consistency_score": 97,
+      "executable": true,
+      "failure_category": null
+    },
+    {
+      "prompt": "Build a property management portal with tenants and rent collection",
+      "success": true,
+      "retries": 0,
+      "latency_ms": 0,
+      "consistency_score": 97,
+      "executable": true,
+      "failure_category": null
+    },
+    {
+      "prompt": "Create an event booking platform with payment and notifications",
+      "success": true,
+      "retries": 0,
+      "latency_ms": 0,
+      "consistency_score": 94,
+      "executable": true,
+      "failure_category": null
+    }
+  ],
+  "edge_prompts": [
+    {
+      "prompt": "app",
+      "success": true,
+      "retries": 0,
+      "latency_ms": 0,
+      "consistency_score": 97,
+      "executable": true,
+      "failure_category": null
+    },
+    {
+      "prompt": "Build fast scalable secure modern thing",
+      "success": true,
+      "retries": 0,
+      "latency_ms": 0,
+      "consistency_score": 97,
+      "executable": true,
+      "failure_category": null
+    },
+    {
+      "prompt": "Create CRM or maybe e-commerce with hospital features",
+      "success": true,
+      "retries": 0,
+      "latency_ms": 0,
+      "consistency_score": 97,
+      "executable": true,
+      "failure_category": null
+    },
+    {
+      "prompt": "No auth, but every route must be protected",
+      "success": true,
+      "retries": 0,
+      "latency_ms": 0,
+      "consistency_score": 97,
+      "executable": true,
+      "failure_category": null
+    },
+    {
+      "prompt": "Use payments but no money-related fields",
+      "success": true,
+      "retries": 0,
+      "latency_ms": 0,
+      "consistency_score": 94,
+      "executable": true,
+      "failure_category": null
+    },
+    {
+      "prompt": "Need analytics only for all users including guests and admin-only",
+      "success": true,
+      "retries": 0,
+      "latency_ms": 0,
+      "consistency_score": 97,
+      "executable": true,
+      "failure_category": null
+    },
+    {
+      "prompt": "Generate system with zero pages and full UI coverage",
+      "success": true,
+      "retries": 0,
+      "latency_ms": 0,
+      "consistency_score": 97,
+      "executable": true,
+      "failure_category": null
+    },
+    {
+      "prompt": "Use no database but persist all records",
+      "success": true,
+      "retries": 0,
+      "latency_ms": 0,
+      "consistency_score": 97,
+      "executable": true,
+      "failure_category": null
+    },
+    {
+      "prompt": "Need role-based access but do not define roles",
+      "success": true,
+      "retries": 0,
+      "latency_ms": 0,
+      "consistency_score": 97,
+      "executable": true,
+      "failure_category": null
+    },
+    {
+      "prompt": "Build app now with everything and nothing specified",
+      "success": true,
+      "retries": 0,
+      "latency_ms": 0,
+      "consistency_score": 97,
+      "executable": true,
+      "failure_category": null
+    }
+  ],
+  "success_rate": 100.0,
+  "failure_rate": 0.0,
+  "repair_rate": 0.0,
+  "avg_repairs": 0.0,
+  "avg_latency": 0.05,
+  "consistency_score": 96.4,
+  "execution_rate": 100.0,
+  "runtime_failures": 0
+}
