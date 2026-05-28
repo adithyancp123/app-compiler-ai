@@ -10,16 +10,11 @@ settings = get_settings()
 
 app = FastAPI(title=settings.app_name)
 
-# CORS middleware (production + local support)
+# CORS (safe for internship deployment)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "https://app-compiler-ai.vercel.app",
-        "https://*.vercel.app",
-    ],
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -29,8 +24,7 @@ app.include_router(api_router, prefix=settings.api_prefix)
 
 
 @app.get("/")
-def root() -> dict[str, str]:
-    """Simple service status endpoint."""
+def root():
     return {
         "service": settings.app_name,
         "status": "ok",
