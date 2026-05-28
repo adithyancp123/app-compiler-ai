@@ -1,5 +1,3 @@
-"""Application entrypoint for FastAPI backend."""
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -10,17 +8,22 @@ settings = get_settings()
 
 app = FastAPI(title=settings.app_name)
 
-# CORS (safe for internship deployment)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=False,
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "https://*.vercel.app",
+    ],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# API routes
-app.include_router(api_router, prefix=settings.api_prefix)
+app.include_router(
+    api_router,
+    prefix=settings.api_prefix
+)
 
 
 @app.get("/")
